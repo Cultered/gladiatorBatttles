@@ -150,7 +150,7 @@ class Healer(Character):
         if self.activeCooldowns["smallHeal"]!=0:
             return
         
-        healProjectile = Projectile(healPos,100,"heal",self.healRad,self.team,-self.healAmount,1,entities)
+        healProjectile = Projectile(healPos,100,"heal",self.healRad,self.team,-self.healAmount,1)
         healProjectile.isHeal=True
         entities.insert(0,healProjectile)
 
