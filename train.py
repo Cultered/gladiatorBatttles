@@ -73,6 +73,6 @@ for i in tqdm.tqdm(range(NUM_GENERATIONS)):
         newAgents.append(newAgent)
     agents.extend(newAgents)
     for j in range(10):
-        agents[j].saveToFile(f"/home/user/Documents/data{i}.txt")
+        agents[j].saveToFile(f"/home/user/Documents/data{j}.txt")
 
 print(len(agents))
