@@ -1,5 +1,6 @@
 import pygame
 from model import Agent, Swordsman, Round, Wizard, point3
+from rl import network
 from typing import List
 
 AGENT_DATA_PATH = "/home/user/1.txt"
@@ -14,15 +15,21 @@ dt = 0
 
 sprites={"swordsman":"gray30","sword":"grey","wizard":"purple","shoot":"orange","healer":"red","heal":"green"}
 
-player=Wizard(point3(500,500,500),100,"wizard",40,1,30,30)
-swordBot=Swordsman(point3(300,300,300),100,"swordsman",40,2,130,10)
+player=Wizard(point3(500,500,0),100,"wizard",40,1,30,30)
+swordBot=Swordsman(point3(300,300,0),100,"swordsman",40,2,130,20)
+wizardBot=Wizard(point3(600,300,0),50,"wizard",40,3,30,30)
 
-round = Round([player,swordBot])
+round = Round([wizardBot,swordBot])
 
 swordBotAgent=Agent(swordBot)
 swordBotAgent.setRound()
-swordBotAgent.loadFromFile("/home/user/Documents/data0.txt")
-agents= [swordBotAgent]
+swordBotAgent.loadFromFile("/home/user/Documents/swordsman_data.txt")
+swordBotAgent.AI=network.emptyNetwork([12,4])
+
+wizardBotAgent=Agent(wizardBot)
+wizardBotAgent.setRound()
+wizardBotAgent.loadFromFile("/home/user/Documents/data0.txt")
+agents= [swordBotAgent,wizardBotAgent]
 swordBotAgent.AI.getHighscore()
 
 
@@ -46,7 +53,7 @@ while running:
         vx-=300
     if keys[pygame.K_d]:
         vx+=300
-    player.setVelocity(point3(vx,vy,0))
+    wizardBot.setVelocity(point3(vx,vy,0))
     if pygame.mouse.get_pressed()[0]:
         player.shoot(
             point3(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],0)
