@@ -158,7 +158,7 @@ class Healer(Character):
 
         healProjectile = Projectile(
             healPos, 100, "heal", self.healRad, self.team, -self.healAmount, 1)
-        healProjectile.isHeal = True
+        healProjectile.is_heal = True
         entities.insert(0, healProjectile)
 
         self.activeCooldowns["smallHeal"] = self.cooldowns["smallHeal"]
@@ -205,8 +205,9 @@ class Projectile(Entity):
         self.damage = damage
         self.life = life
         self.hits = 1
-        self.isHeal = False
+        self.is_heal = False
         self.maxSpeed = Projectile.MAX_SPEED
+        self.min_distance_enemy=float("inf")
 
     def shoot(self, target: point3, speed: float):
         if speed > Projectile.MAX_SPEED:
@@ -229,12 +230,14 @@ class Projectile(Entity):
         for target in self.round.entities:
             if target == self:
                 continue
+            if self.pos.distance(target.pos)<self.min_distance_enemy and target.team!=self.team:
+                self.min_distance_enemy=self.pos.distance(target.pos)
             if not entitiesCollide(self, target):
                 continue
-            if self.isHeal and target.team == self.team:
+            if self.is_heal and target.team == self.team:
                 target.applyDamage(self.damage)
                 self.hits -= 1
-            if not self.isHeal and target.team != self.team:
+            if not self.is_heal and target.team != self.team:
                 target.applyDamage(self.damage)
                 self.hits -= 1
 
@@ -332,8 +335,8 @@ class Agent:
             )
             desired_actions = self.AI.runNetwork()
             self.character.shoot(point3(desired_actions[2],desired_actions[3],0))
-            #self.character.setVelocity(
-            #    point3(desired_actions[0], desired_actions[1], 0))
+            self.character.setVelocity(
+                point3(desired_actions[0], desired_actions[1], 0))
 
 
     def saveToFile(self, path):

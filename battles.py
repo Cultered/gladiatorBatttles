@@ -1,5 +1,6 @@
 import pygame
-from model import Agent, Swordsman, Round, Wizard, point3
+import random
+from model import Agent, Swordsman, Round, Wizard, point3, Projectile
 from rl import network
 from typing import List
 
@@ -16,8 +17,8 @@ dt = 0
 sprites={"swordsman":"gray30","sword":"grey","wizard":"purple","shoot":"orange","healer":"red","heal":"green"}
 
 player=Wizard(point3(500,500,0),100,"wizard",40,1,30,30)
-swordBot=Swordsman(point3(300,300,0),100,"swordsman",40,2,130,20)
-wizardBot=Wizard(point3(600,300,0),50,"wizard",40,3,30,30)
+swordBot=Swordsman(point3(600,300,0),100,"swordsman",40,2,130,20)
+wizardBot=Wizard(point3(600,600,0),100,"wizard",40,3,40,30)
 
 round = Round([wizardBot,swordBot])
 
@@ -32,6 +33,9 @@ wizardBotAgent.loadFromFile("/home/user/Documents/data0.txt")
 agents= [swordBotAgent,wizardBotAgent]
 swordBotAgent.AI.getHighscore()
 
+swordBotAgent.character.pos = point3(random.randint(
+    0, 1200), random.randint(0, 700), 0)
+wizardBot.pos = point3(random.randint(0, 1200), random.randint(0, 700), 0)
 
 while running:
     for event in pygame.event.get():
@@ -53,7 +57,7 @@ while running:
         vx-=300
     if keys[pygame.K_d]:
         vx+=300
-    wizardBot.setVelocity(point3(vx,vy,0))
+    swordBot.setVelocity(point3(vx,vy,0))
     if pygame.mouse.get_pressed()[0]:
         player.shoot(
             point3(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],0)
