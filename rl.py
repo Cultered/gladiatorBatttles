@@ -23,7 +23,7 @@ class nconnection:
         self.endNode = endNode
 
     def randomizeWeight(self, rang: float):
-        self.weight += random.uniform(-rang, rang)
+        self.weight += random.gauss(0, rang)
 
     def randomizeWeightP(self, rang: float):
         if self.weight == 0:
@@ -80,7 +80,7 @@ class nlayer:
 
     def calculateNextLayer(self):
         for node in self.nodes:
-            # node.value=math.atan(node.value)
+            #node.value=math.atan(node.value)
             node.addWeightedValue()
 
     def loadWeights(self, weightsList: List[List[float]]):
@@ -192,6 +192,12 @@ class network:
 
     def revertChanges(self):
         self.loadWeights(self.bestState)
+
+    def changeEveryWeight(self, rang):
+        for l in self.layers:
+            for n in l.nodes:
+                for c in n.connections:
+                    c.randomizeWeight(rang)
 
     def changeRandomWeight(self, rang):
         changedConnection = random.choice(random.choice(

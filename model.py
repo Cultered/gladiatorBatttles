@@ -101,7 +101,7 @@ class Character(Entity):
 
 
 class Swordsman(Character):
-    MAX_SPEED = 300
+    MAX_SPEED = 200
 
     def __init__(self, pos, health, sprite, size, team, wrange, damage):
         super().__init__(pos, health, sprite, size, team)
@@ -171,7 +171,7 @@ class Wizard(Character):
         super().__init__(pos, health, sprite, size, team)
         self.shootRadius = shootRadius
         self.damage = damage
-        self.cooldowns = {"shoot": 2}
+        self.cooldowns = {"shoot": 0.2}
         self.activeCooldowns = {"shoot": 0}
         self.maxSpeed = Wizard.MAX_SPEED
 
@@ -299,19 +299,13 @@ class Agent:
                 [
                     self.character.pos.x,
                     self.character.pos.y,
-                    self.character._velocity.x,
-                    self.character._velocity.y,
-                    self.character.health,
                     list(self.character.activeCooldowns.values())[0],
                     enemy.pos.x,
                     enemy.pos.y,
-                    enemy._velocity.x,
-                    enemy._velocity.y,
-                    enemy.health,
                     list(enemy.activeCooldowns.values())[0]
                 ]
             )
-            #self.character.normalAttack()
+            self.character.normalAttack()
             desiredPosition = self.AI.runNetwork()
             self.character.setVelocity(
                 point3(desiredPosition[0], desiredPosition[1], 0))
@@ -321,15 +315,9 @@ class Agent:
                 [
                     self.character.pos.x,
                     self.character.pos.y,
-                    self.character._velocity.x,
-                    self.character._velocity.y,
-                    self.character.health,
                     list(self.character.activeCooldowns.values())[0],
                     enemy.pos.x,
                     enemy.pos.y,
-                    enemy._velocity.x,
-                    enemy._velocity.y,
-                    enemy.health,
                     list(enemy.activeCooldowns.values())[0]
                 ]
             )

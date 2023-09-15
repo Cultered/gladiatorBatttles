@@ -25,17 +25,17 @@ round = Round([wizardBot,swordBot])
 swordBotAgent=Agent(swordBot)
 swordBotAgent.setRound()
 swordBotAgent.loadFromFile("/home/user/Documents/swordsman_data.txt")
-swordBotAgent.AI=network.emptyNetwork([12,4])
+#swordBotAgent.AI=network.emptyNetwork([6,4])
 
 wizardBotAgent=Agent(wizardBot)
 wizardBotAgent.setRound()
-wizardBotAgent.loadFromFile("/home/user/Documents/data0.txt")
+wizardBotAgent.loadFromFile("/home/user/Documents/data9.txt")
 agents= [swordBotAgent,wizardBotAgent]
 swordBotAgent.AI.getHighscore()
 
-swordBotAgent.character.pos = point3(random.randint(
-    0, 1200), random.randint(0, 700), 0)
-wizardBot.pos = point3(random.randint(0, 1200), random.randint(0, 700), 0)
+#swordBotAgent.character.pos = point3(random.randint(
+#    0, 1200), random.randint(0, 700), 0)
+#wizardBot.pos = point3(random.randint(0, 1200), random.randint(0, 700), 0)
 
 while running:
     for event in pygame.event.get():
@@ -57,7 +57,7 @@ while running:
         vx-=300
     if keys[pygame.K_d]:
         vx+=300
-    swordBot.setVelocity(point3(vx,vy,0))
+    wizardBot.setVelocity(point3(vx,vy,0))
     if pygame.mouse.get_pressed()[0]:
         player.shoot(
             point3(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],0)
@@ -77,7 +77,8 @@ while running:
             continue
         if entity.sprite in sprites:
             pygame.draw.circle(screen,sprites[entity.sprite],[entity.pos.x,entity.pos.y],entity.size)
-            pygame.draw.circle(screen,pygame.Color(0,int(entity.health/entity.maxhealth*255),0),[entity.pos.x,entity.pos.y],4)
+            if not isinstance(entity,Projectile):
+                pygame.draw.circle(screen,pygame.Color(0,int(entity.health/entity.maxhealth*255),0),[entity.pos.x,entity.pos.y],4)
         else:
             pygame.draw.circle(screen,"yellow",[entity.pos.x,entity.pos.y],entity.size)
 
